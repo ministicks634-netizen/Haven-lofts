@@ -1,0 +1,6 @@
+{
+  "name": "Haven Lofts",
+  "description": "Boutique hair salon founded by Sara and Leah in Lakeville, Minnesota.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
