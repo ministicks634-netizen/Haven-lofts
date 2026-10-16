@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { Phone, Upload, Camera, Trash2, Menu, X, Clock, MapPin, Sparkles } from 'lucide-react';
-import { getStoredImage, setStoredImage, removeStoredImage } from '../utils/storage.ts';
+import React, { useState } from 'react';
+import { Phone, Menu, X, Clock, MapPin } from 'lucide-react';
 import { SalonInfo } from '../types.ts';
 
 const DEFAULT_LOGO_PATH = '/haven_lofts_logo.jpg';
@@ -11,102 +10,22 @@ interface NavbarProps {
 }
 
 export const Navbar: React.FC<NavbarProps> = ({ salonInfo, onOpenPhoneMenu }) => {
-  const [logoUrl, setLogoUrl] = useState<string | null>(null);
-  const [showLogoHover, setShowLogoHover] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const fileInputRef = useRef<HTMLInputElement>(null);
-
-  useEffect(() => {
-    const stored = getStoredImage('logo');
-    setLogoUrl(stored || DEFAULT_LOGO_PATH);
-
-    const handleUpdate = (e: Event) => {
-      const customEvent = e as CustomEvent<{ key: string; dataUrl: string | null }>;
-      if (customEvent.detail?.key === 'logo') {
-        setLogoUrl(customEvent.detail.dataUrl || DEFAULT_LOGO_PATH);
-      }
-    };
-    const handleCleared = () => setLogoUrl(DEFAULT_LOGO_PATH);
-
-    window.addEventListener('haven-lofts-image-updated', handleUpdate);
-    window.addEventListener('haven-lofts-images-cleared', handleCleared);
-    return () => {
-      window.removeEventListener('haven-lofts-image-updated', handleUpdate);
-      window.removeEventListener('haven-lofts-images-cleared', handleCleared);
-    };
-  }, []);
-
-  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      const dataUrl = event.target?.result as string;
-      if (dataUrl) {
-        setStoredImage('logo', dataUrl);
-        setLogoUrl(dataUrl);
-      }
-    };
-    reader.readAsDataURL(file);
-    e.target.value = '';
-  };
-
-  const handleRemoveLogo = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    removeStoredImage('logo');
-    setLogoUrl(DEFAULT_LOGO_PATH);
-  };
-
-  const isCustomLogo = logoUrl && logoUrl !== DEFAULT_LOGO_PATH;
 
   return (
     <header className="sticky top-0 z-40 bg-[#FAF7F2]/95 backdrop-blur-md border-b border-[#E4DDD0]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2.5 sm:py-3.5 flex items-center justify-between gap-4">
         {/* Zone 1: Logo & Brand Wordmark */}
         <div className="flex items-center gap-3 shrink-0">
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleLogoUpload}
-            accept="image/*"
-            className="hidden"
-            aria-label="Upload Haven Lofts logo"
-          />
-
           {/* Circular Gold Haven Lofts Logo */}
-          <div
-            className="relative group cursor-pointer"
-            onClick={() => fileInputRef.current?.click()}
-            onMouseEnter={() => setShowLogoHover(true)}
-            onMouseLeave={() => setShowLogoHover(false)}
-            title="Click to replace logo file"
-          >
-            <div className="relative h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-[#D4AF37]/50 bg-white overflow-hidden flex items-center justify-center shadow-xs">
-              <img
-                src={logoUrl || DEFAULT_LOGO_PATH}
-                alt="Haven Lofts Logo"
-                className="w-full h-full object-contain p-0.5"
-                referrerPolicy="no-referrer"
-              />
-
-              {showLogoHover && (
-                <div className="absolute inset-0 bg-[#2B3527]/85 flex items-center justify-center gap-1">
-                  <Camera className="w-3.5 h-3.5 text-[#E0B275]" />
-                  {isCustomLogo && (
-                    <button
-                      type="button"
-                      onClick={handleRemoveLogo}
-                      className="text-neutral-200 hover:text-white"
-                      title="Reset to default logo"
-                    >
-                      <Trash2 className="w-3 h-3" />
-                    </button>
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
+          <a href="#" className="relative h-11 w-11 sm:h-12 sm:w-12 rounded-full border border-[#D4AF37]/50 bg-white overflow-hidden flex items-center justify-center shadow-xs">
+            <img
+              src={DEFAULT_LOGO_PATH}
+              alt="Haven Lofts Logo"
+              className="w-full h-full object-contain p-0.5"
+              referrerPolicy="no-referrer"
+            />
+          </a>
 
           {/* Clean Brand Lockup */}
           <a href="#" className="flex flex-col text-left group">

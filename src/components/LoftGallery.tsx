@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
-import { Camera, DoorClosed, Sparkles } from 'lucide-react';
+import React, { useState } from 'react';
+import { DoorClosed } from 'lucide-react';
 import { LoftSpace } from '../types.ts';
 import { ImageSlot } from './ImageSlot.tsx';
-import { getStoredImage, clearAllStoredImages } from '../utils/storage.ts';
 
 interface LoftGalleryProps {
   spaces: LoftSpace[];
@@ -10,34 +9,6 @@ interface LoftGalleryProps {
 
 export const LoftGallery: React.FC<LoftGalleryProps> = ({ spaces }) => {
   const [filter, setFilter] = useState<'all' | 'common' | 'salons' | 'specialty'>('all');
-  const [customImportCount, setCustomImportCount] = useState<number>(0);
-
-  const checkCounts = () => {
-    let count = 0;
-    spaces.forEach((s) => {
-      if (getStoredImage(s.imageKey)) count++;
-    });
-    setCustomImportCount(count);
-  };
-
-  useEffect(() => {
-    checkCounts();
-    const handleUpdate = () => checkCounts();
-    const handleCleared = () => setCustomImportCount(0);
-
-    window.addEventListener('haven-lofts-image-updated', handleUpdate);
-    window.addEventListener('haven-lofts-images-cleared', handleCleared);
-    return () => {
-      window.removeEventListener('haven-lofts-image-updated', handleUpdate);
-      window.removeEventListener('haven-lofts-images-cleared', handleCleared);
-    };
-  }, [spaces]);
-
-  const handleResetAll = () => {
-    if (window.confirm('Reset all uploaded photos back to empty placeholder slots?')) {
-      clearAllStoredImages();
-    }
-  };
 
   const filteredSpaces = spaces.filter((space) => {
     if (filter === 'common') {
@@ -68,26 +39,8 @@ export const LoftGallery: React.FC<LoftGalleryProps> = ({ spaces }) => {
             </h2>
             <p className="text-[#5A5245] text-sm sm:text-base mt-2 max-w-2xl leading-relaxed">
               Haven Lofts is laid out into private independent suites, a shared main hallway, and dedicated service rooms.
-              As our build-out wraps up, real photos for each room can be imported right into the slots below.
+              Room photography will be featured as our build-out wraps up.
             </p>
-          </div>
-
-          {/* Upload Status Counter */}
-          <div className="flex items-center gap-3 shrink-0 text-xs text-[#6F675A]">
-            <div className="flex items-center gap-2 px-3 py-2 border border-[#DDD5C7] bg-white shadow-2xs rounded-xs">
-              <Camera className="w-3.5 h-3.5 text-[#3D4A38]" />
-              <span>{customImportCount} of {spaces.length} Room Photos</span>
-            </div>
-
-            {customImportCount > 0 && (
-              <button
-                type="button"
-                onClick={handleResetAll}
-                className="text-[#3D4A38] hover:text-[#211F1D] transition-colors underline text-xs font-semibold py-1"
-              >
-                Reset All
-              </button>
-            )}
           </div>
         </div>
 
@@ -147,13 +100,10 @@ export const LoftGallery: React.FC<LoftGalleryProps> = ({ spaces }) => {
               className="bg-white border border-[#DDD5C7] p-4 sm:p-5 flex flex-col justify-between hover:border-[#4A5843]/60 transition-all shadow-xs rounded-xs group"
             >
               <div>
-                {/* Empty Image Slot */}
+                {/* Clean blank image slot */}
                 <ImageSlot
-                  imageKey={space.imageKey}
                   label={space.title}
-                  sublabel="Click to import photo"
                   aspectRatioClass="aspect-[4/3]"
-                  aspectBadge="4:3 photo slot"
                   className="w-full shadow-2xs rounded-xs"
                 />
 
@@ -184,7 +134,7 @@ export const LoftGallery: React.FC<LoftGalleryProps> = ({ spaces }) => {
                   <DoorClosed className="w-3.5 h-3.5 text-[#4A5843]" />
                   <span>Lakeville, MN</span>
                 </span>
-                <span className="text-[11px] text-[#4A5843] font-bold">Tap to import</span>
+                <span className="text-[11px] text-[#7A7162] font-medium">Private Suite</span>
               </div>
             </div>
           ))}

@@ -126,11 +126,9 @@ export const StylistsSection: React.FC<StylistsSectionProps> = ({ stylists, onUp
                     {/* Photo Slot */}
                     <div className="sm:col-span-5 max-w-[280px] sm:max-w-none mx-auto sm:mx-0 w-full">
                       <ImageSlot
-                        imageKey={stylist.imageKey}
-                        label={`${stylist.name}'s Photo`}
-                        sublabel={`Click to import photo`}
+                        label={`${stylist.name}`}
+                        sublabel="Portrait Coming Soon"
                         aspectRatioClass="aspect-[3/4]"
-                        aspectBadge="3:4 · 900 × 1200 px"
                         className="w-full shadow-xs rounded-xs"
                       />
                     </div>

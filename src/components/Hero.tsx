@@ -143,18 +143,15 @@ export const Hero: React.FC<HeroProps> = ({ salonInfo, onCallSara, onCallLeah })
               <div className="absolute -inset-2 border border-[#D5CCBC]/60 pointer-events-none rounded-xs" />
 
               <ImageSlot
-                imageKey="hero_main_loft"
                 label="The Salon Atmosphere"
-                sublabel="Finished salon photography can be imported here"
+                sublabel="Interior Photography Coming Soon"
                 aspectRatioClass="aspect-[16/10]"
-                aspectBadge="16:10 · 1920 × 1200 px"
-                defaultConceptImage="/src/assets/images/boho_salon_hero_1792099355845.jpg"
                 className="w-full shadow-md"
               />
 
               <div className="mt-2.5 flex items-center justify-between text-xs text-[#6F675A]">
                 <span>Haven Lofts · Lakeville, MN</span>
-                <span className="text-[#3D4A38] font-semibold">Tap to import real photo</span>
+                <span className="text-[#3D4A38] font-medium">Boutique Hair Salon</span>
               </div>
             </div>
           </div>
